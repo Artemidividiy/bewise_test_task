@@ -39,6 +39,31 @@ services:
       - 42070:80
     restart: unless-stopped
 
+  grafana_postgres_db:
+    container_name: grafana_db
+    image: postgres
+    ports: 
+      - 40000:5433
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G 
+    volumes:
+      - grafana_postgres_db:/var/lib/postgresql/data
+
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
@@ -46,13 +71,13 @@ services:
     restart: unless-stopped
     environment:
       GF_DATABASE_TYPE: postgres
-      GF_DATABASE_HOST: db:5432
-      GF_DATABASE_NAME: bewise_get_questions
+      GF_DATABASE_HOST: grafana_postgres_db:5433
+      GF_DATABASE_NAME: postgres
       GF_DATABASE_USER: postgres
       GF_DATABASE_PASSWORD: postgres
       GF_DATABASE_SSL_MODE: disable
     depends_on:
-      - db
+      - grafana_postgres_db
     ports:
       - 42071:3000
     volumes:
@@ -61,6 +86,7 @@ services:
 volumes:
   bewise:
   pgadmin-data:
+  grafana_postgres_db:
   grafana:
 
 
