@@ -8,7 +8,7 @@ services:
       - 42069:5432
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "bewise_get_questions"
+      POSTGRES_DB: bewise_get_questions
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
@@ -25,11 +25,9 @@ services:
           memory: 4G 
     volumes:
       - bewise:/var/lib/postgresql/data
-    networks:
-        - postgres
 
   pgadmin:
-    container_name: pgadmin_container
+    container_name: pgadmin
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "test@bee.com"
@@ -40,13 +38,30 @@ services:
     ports: 
       - 42070:80
     restart: unless-stopped
-    networks:
-        - postgres
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    user: "0:0"
+    restart: unless-stopped
+    environment:
+      GF_DATABASE_TYPE: postgres
+      GF_DATABASE_HOST: db:5432
+      GF_DATABASE_NAME: bewise_get_questions
+      GF_DATABASE_USER: postgres
+      GF_DATABASE_PASSWORD: postgres
+      GF_DATABASE_SSL_MODE: disable
+    depends_on:
+      - db
+    ports:
+      - 42071:3000
+    volumes:
+      - grafana:/var/lib/grafana 
+
 volumes:
   bewise:
   pgadmin-data:
+  grafana:
 
-networks:
-  postgres:
-    driver: bridge
+
 
