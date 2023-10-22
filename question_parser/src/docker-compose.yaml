@@ -26,42 +26,9 @@ services:
     volumes:
       - bewise:/var/lib/postgresql/data
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "test@bee.com"
-      PGADMIN_DEFAULT_PASSWORD: "12345"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    ports: 
-      - 42070:80
-    restart: unless-stopped
-
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:latest
-    user: "0:0"
-    restart: unless-stopped
-    environment:
-      GF_DATABASE_TYPE: postgres
-      GF_DATABASE_HOST: db:5432
-      GF_DATABASE_NAME: bewise_get_questions
-      GF_DATABASE_USER: postgres
-      GF_DATABASE_PASSWORD: postgres
-      GF_DATABASE_SSL_MODE: disable
-    depends_on:
-      - db
-    ports:
-      - 42071:3000
-    volumes:
-      - grafana:/var/lib/grafana 
-
+ 
 volumes:
   bewise:
-  pgadmin-data:
-  grafana:
-
+ 
 
 
