@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 import models
 
 
@@ -9,13 +10,13 @@ class QuestionBase(BaseModel):
 
 
 class QuestionCreate(QuestionBase):
-    pass
+    id: int
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
 
 
 class Question(QuestionBase):
     id: int
-    created_at: int
-    updated_at: int
 
     class Config:
         orm_mode = True

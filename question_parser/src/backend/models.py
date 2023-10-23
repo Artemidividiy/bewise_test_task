@@ -10,3 +10,6 @@ class Question(Base):
     answer_text = Column("answer_text", String, nullable=False, unique=True)
     question_created_at = Column(
         "question_created_at", DateTime, nullable=False, unique=True)
+    question_id = Column("question_id", Integer, nullable=False, unique=True)
+    created_at = Column("created_at", DateTime, nullable=False)
+    updated_at = Column("updated_at", DateTime, nullable=False)

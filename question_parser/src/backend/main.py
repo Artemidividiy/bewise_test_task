@@ -1,12 +1,11 @@
+from fastapi import Depends, FastAPI
+from sqlalchemy.orm import Session
+
+import crud
 import models
 import schemas
-import crud
-
-from fastapi import Depends, FastAPI
-from services.fetch_question_service import fetch_questions
 from services.db_service import SessionLocal, engine
-from sqlalchemy.orm import Session
-import models
+from services.fetch_question_service import fetch_questions
 
 app = FastAPI()
 
