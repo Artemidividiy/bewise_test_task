@@ -1,0 +1,4 @@
+src/backend/.vscode
+**/__pycache__
+*.py[cod]
+src/backend/venv
