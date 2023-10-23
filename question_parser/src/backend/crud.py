@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 
 def create_question(db: Session, questions: list[schemas.QuestionCreate]):
-    print(questions)
+    """Метод Question.create"""
     target = []
     for question in questions:
         db_question = models.Question(
@@ -20,3 +20,8 @@ def create_question(db: Session, questions: list[schemas.QuestionCreate]):
         db.refresh(db_question)
         target.append(db_question)
     return target
+
+
+def get_questions(db: Session):
+    """Метод Question.read"""
+    return db.query(models.Question).all()
